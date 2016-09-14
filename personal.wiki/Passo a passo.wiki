@@ -1,0 +1,145 @@
+= Passo a passo =
+
+== 1 - Configurando o projeto ==
+
+=== 1.1 Estrutura de pastas ===
+    {{{
+    ├── bin
+    │   └── app.bundle.js
+    ├── index.js
+    ├── package.json
+    ├── src
+    │   ├── components
+    │   │   └── App.js
+    │   └── main.js
+    └── webpack.config.js
+    }}}
+
+=== 1.2 Dependências ===
+    - Dependências de desenvolvimento
+        - babel-core
+        - babel-loader
+        - babel-preset-es2015
+        - babel-preset-react
+        - webpack
+    - Dependências do projeto
+        - react
+        - react-dom
+
+    - Instalando dependências
+        - Primeiramente vamos iniciar nosso arquivo *package.json*
+        {{{
+        npm init -y
+        }}}
+        - Em seguida as dependencias do projeto:
+        {{{
+        npm install --save-dev babel-core babel-loader babel-preset-es2015 babel-preset-react webpack
+        npm install --save react react-dom
+        }}}
+        - Nosso arquivo *package.json* ficará assim:
+        {{{ json
+        {
+          "name": "react-todo",
+          "version": "1.0.0",
+          "description": "",
+          "main": "index.js",
+          "scripts": {
+            "test": "echo \"Error: no test specified\" && exit 1"
+          },
+          "keywords": [],
+          "author": "",
+          "license": "ISC",
+          "devDependencies": {
+            "babel-core": "^6.14.0",
+            "babel-loader": "^6.2.5",
+            "babel-preset-es2015": "^6.14.0",
+            "babel-preset-react": "^6.11.1",
+            "webpack": "^1.13.2"
+          },
+          "dependencies": {
+            "react": "^15.3.1",
+            "react-dom": "^15.3.1"
+          }
+        }
+        }}}    
+
+=== 1.2 - Configurando o webpack ===
+    - Configurando o arquivo *.babelrc*
+    {{{json
+        {
+            "presets": [
+                "es2015",
+                "react"
+            ]
+        } 
+    }}}
+    - Configurando o arquivo *webpack.config.js*
+    {{{javascript
+        module.exports = {
+            entry: './src/main.js', // Arquivo principal da aplicação
+            output: {
+                path: './bin', // Pasta onde ficará o pacote gerado pelo webpack
+                filename: 'app.bundle.js' // Nome do pacote gerado pelo webpack
+            },
+            module: {
+                loaders: [
+                    {
+                        test: /.jsx?$/, // Verifica se o arquivo possui a extensão .jsx
+                        loader: 'babel-loader', // Loader responsável por converter JS ES6 para ES5
+                        exclude: /node_modules/, // Evita que o webpack leia os arquivos da pasta node_modules
+                    }
+                ]
+            }
+        };
+    }}}
+
+== 2 - Criando nosso primeiro Component ==
+=== 2.1 - O que são Components? ===
+Components são pequenos "pedaços" da nossa aplicação que podem ser utilizados várias e várias vezes dentro dela (ou até mesmo fora).
+<Bota uma imagem mostrando a componentização de uma tela>
+    
+=== 2.2 - Mão na massa! ===
+Primeiro vamos criar o arquivo *index.html*, nele adicionaremos a *div#app* que é onde nossa aplicação será renderizada e por último importamos o script
+*app.bundle.js* gerado pelo *webpack*.
+{{{html
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>React APP</title>
+    </head>
+    <body>
+        <h1>React rocks!</h1>
+        <div id="app"></div>
+        
+        <script src="bin/app.bundle.js"></script>
+    </body>
+    </html>
+}}}
+
+Agora vamos criar o arquivo *main.js* que será responsável por renderizar a aplicação na div que adicionamos no html.
+{{{javascript
+    // src/main.js
+    import React from 'react';
+    import { render } from 'react-dom';
+    
+    render(
+        <h1> Hello World! </h1>, 
+        document.getElementById("app")
+    );
+}}}
+
+Em seguida executamos o webpack para que ele possa gerar nosso *bundle*:
+{{{
+    > webpack
+    
+    Hash: 484a034e635dcd78a455
+    Version: webpack 1.13.2
+    Time: 980ms
+            Asset    Size  Chunks             Chunk Names
+    app.bundle.js  738 kB       0  [emitted]  main
+        + 172 hidden modules
+
+}}}
+
+Agora é só abrir o arquivo *index.html* no browser. Et voilá!
