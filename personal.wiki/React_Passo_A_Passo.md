@@ -3,65 +3,65 @@
 ## 1 - Configurando o projeto
 
 ### 1.1 Estrutura de pastas
-    ```
-    ├── bin
-    │   └── app.bundle.js
-    ├── index.js
-    ├── package.json
-    ├── src
-    │   ├── components
-    │   │   └── App.js
-    │   └── main.js
-    └── webpack.config.js
-    ```
+```
+├── bin
+│   └── app.bundle.js
+├── index.js
+├── package.json
+├── src
+│   ├── components
+│   │   └── App.js
+│   └── main.js
+└── webpack.config.js
+```
 
 ### 1.2 Dependências
-    * Dependências de desenvolvimento
-        * babel-core
-        * babel-loader
-        * babel-preset-es2015
-        * babel-preset-react
-        * webpack
-    * Dependências do projeto
-        * react
-        * react-dom
+* Dependências de desenvolvimento
+    * babel-core
+    * babel-loader
+    * babel-preset-es2015
+    * babel-preset-react
+    * webpack
+* Dependências do projeto
+    * react
+    * react-dom
 
-    * Instalando dependências
-        * Primeiramente vamos iniciar nosso arquivo **package.json**
-        ```
-        npm init -y
-        ```
-        * Em seguida as dependencias do projeto:
-        ```
-        npm install --save-dev babel-core babel-loader babel-preset-es2015 babel-preset-react webpack
-        npm install --save react react-dom
-        ```
-        * Nosso arquivo **package.json** ficará assim:
-        ```json
-        {
-          "name": "react-todo",
-          "version": "1.0.0",
-          "description": "",
-          "main": "index.js",
-          "scripts": {
-            "test": "echo \"Error: no test specified\" && exit 1"
-          },
-          "keywords": [],
-          "author": "",
-          "license": "ISC",
-          "devDependencies": {
-            "babel-core": "^6.14.0",
-            "babel-loader": "^6.2.5",
-            "babel-preset-es2015": "^6.14.0",
-            "babel-preset-react": "^6.11.1",
-            "webpack": "^1.13.2"
-          },
-          "dependencies": {
-            "react": "^15.3.1",
-            "react-dom": "^15.3.1"
-          }
-        }
-        ```    
+* Instalando dependências
+    * Primeiramente vamos iniciar nosso arquivo **package.json**
+    ```
+    npm init -y
+    ```
+    * Em seguida as dependencias do projeto:
+    ```
+    npm install --save-dev babel-core babel-loader babel-preset-es2015 babel-preset-react webpack
+    npm install --save react react-dom
+    ```
+    * Nosso arquivo **package.json** ficará assim:
+    ```json
+    {
+      "name": "react-todo",
+      "version": "1.0.0",
+      "description": "",
+      "main": "index.js",
+      "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+      },
+      "keywords": [],
+      "author": "",
+      "license": "ISC",
+      "devDependencies": {
+        "babel-core": "^6.14.0",
+        "babel-loader": "^6.2.5",
+        "babel-preset-es2015": "^6.14.0",
+        "babel-preset-react": "^6.11.1",
+        "webpack": "^1.13.2"
+      },
+      "dependencies": {
+        "react": "^15.3.1",
+        "react-dom": "^15.3.1"
+      }
+    }
+    ```    
 
 ### 1.2 - Configurando o webpack
     * Configurando o arquivo **.babelrc**
