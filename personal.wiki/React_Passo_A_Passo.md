@@ -64,41 +64,41 @@
     ```    
 
 ### 1.2 - Configurando o webpack
-    * Configurando o arquivo **.babelrc**
-    ```json
-        {
-            "presets": [
-                "es2015",
-                "react"
+* Configurando o arquivo **.babelrc**
+```json
+    {
+        "presets": [
+            "es2015",
+            "react"
+        ]
+    } 
+```
+* Configurando o arquivo **webpack.config.js**
+```javascript
+    module.exports = {
+        entry: './src/main.js', // Arquivo principal da aplicação
+        output: {
+            path: './bin', // Pasta onde ficará o pacote gerado pelo webpack
+            filename: 'app.bundle.js' // Nome do pacote gerado pelo webpack
+        },
+        module: {
+            loaders: [
+                {
+                    test: /.jsx?$/, // Verifica se o arquivo possui a extensão .jsx
+                    loader: 'babel-loader', // Loader responsável por converter JS ES6 para ES5
+                    exclude: /node_modules/, // Evita que o webpack leia os arquivos da pasta node_modules
+                }
             ]
-        } 
-    ```
-    - Configurando o arquivo **webpack.config.js**
-    ```javascript
-        module.exports = {
-            entry: './src/main.js', // Arquivo principal da aplicação
-            output: {
-                path: './bin', // Pasta onde ficará o pacote gerado pelo webpack
-                filename: 'app.bundle.js' // Nome do pacote gerado pelo webpack
-            },
-            module: {
-                loaders: [
-                    {
-                        test: /.jsx?$/, // Verifica se o arquivo possui a extensão .jsx
-                        loader: 'babel-loader', // Loader responsável por converter JS ES6 para ES5
-                        exclude: /node_modules/, // Evita que o webpack leia os arquivos da pasta node_modules
-                    }
-                ]
-            }
-        };
-    ```
+        }
+    };
+```
 
-== 2 - Criando nosso primeiro Component ==
-=== 2.1 - O que são Components? ===
+## 2 - Criando nosso primeiro Component
+### 2.1 - O que são Components?
 Components são pequenos "pedaços" da nossa aplicação que podem ser utilizados várias e várias vezes dentro dela (ou até mesmo fora).
 <Bota uma imagem mostrando a componentização de uma tela>
     
-=== 2.2 - Mão na massa! ===
+### 2.2 - Mão na massa!
 Primeiro vamos criar o arquivo **index.html**, nele adicionaremos a **div#app** que é onde nossa aplicação será renderizada e por último importamos o script
 **app.bundle.js** gerado pelo **webpack**.
 
