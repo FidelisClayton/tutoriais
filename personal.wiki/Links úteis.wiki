@@ -1,5 +1,0 @@
-= Links úteis VIM =
-
-VimWiki
-- Getting started with VimWiki: http://blog.mague.com/?p=602
-- Custom templates in VimWiki: http://www.rosipov.com/blog/custom-templates-in-vimwiki/
