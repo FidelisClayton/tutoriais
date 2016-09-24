@@ -1,2 +1,2 @@
 # Tutoriais
-Tutoriais escritos com o intuído de melhorar os estudos e servir como consulta.
+Tutoriais escritos com o intuíto de auxiliar os estudos e utilizá-los como consulta.
