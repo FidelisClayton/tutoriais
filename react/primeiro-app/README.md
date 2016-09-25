@@ -515,7 +515,7 @@ export default class Playlist extends Component {
 
 Com isso feito, ao visualizar nossa aplicação veremos todos os itens renderizados.
 
-**_E esse id e __key__ que mandamos como prop_**?
+**_E esse id e key que mandamos como prop_**?
 Todo componente quando iterado necessita de uma chave única, no caso, o índice correspondente na lista de músicas. O id será utilizado
 mais adiante para remover um item da lista.
 
