@@ -1,4 +1,4 @@
-# Passo a passo
+# Desenvolvendo primeiro APP com React
 
 ## 1 - Configurando o projeto
 
@@ -64,15 +64,7 @@
     ```    
 
 ### 1.2 - Configurando o webpack
-* Configurando o arquivo **.babelrc**
-```json
-    {
-        "presets": [
-            "es2015",
-            "react"
-        ]
-    } 
-```
+
 * Configurando o arquivo **webpack.config.js**
 ```javascript
     var webpack = require('webpack');
@@ -80,8 +72,9 @@
     module.exports = {
         entry: './src/main.js', // Arquivo principal da aplicação
         output: {
-            path: './', // Pasta onde ficará o pacote gerado pelo webpack
+            path: './dist/', // Pasta onde ficará o pacote gerado pelo webpack
             filename: 'app.bundle.js' // Nome do pacote gerado pelo webpack
+            publicPath: './dist/'
         },
         module: {
             loaders: [
@@ -89,13 +82,16 @@
                     test: /.jsx?$/, // Verifica se o arquivo possui a extensão .jsx
                     loader: 'babel-loader', // Loader responsável por converter JS ES6 para ES5
                     exclude: /node_modules/, // Evita que o webpack leia os arquivos da pasta node_modules
+                    query: {
+                        presets: ['es2015', 'react'] // Informa ao babel que vamos utilizar a sintaxe do ES6 e do React
+                    }
                 }
             ]
         }
     };
 ```
 
-## 2 - Criando nosso primeiro Component
+## 2 - Criando nossos Components
 ### 2.1 - O que são Components?
 Components são pequenos "pedaços" da nossa aplicação que podem ser utilizados várias e várias vezes dentro dela (ou até mesmo fora).
 <Bota uma imagem mostrando a componentização de uma tela>
@@ -109,23 +105,22 @@ Primeiro vamos criar o arquivo **index.html**, nele adicionaremos a **div#app** 
     <html>
     <head>
         <meta charset="UTF-8">
-        <title>React APP</title>
+        <title>Playlist</title>
     </head>
     <body>
-        <h1>React rocks!</h1>
         <div id="app"></div>
-        
+
         <script src="app.bundle.js"></script>
     </body>
     </html>
 ```
 
-Agora vamos criar o arquivo **main.js** que será responsável por renderizar a aplicação na div que adicionamos no html.
+Agora vamos criar o arquivo **main.js** na pasta **src** que será responsável por renderizar a aplicação na div que adicionamos no html.
 ```javascript
     // src/main.js
     import React from 'react';
     import { render } from 'react-dom';
-    
+
     render(
         <h1> Hello World! </h1>, 
         document.getElementById("app")
@@ -134,33 +129,38 @@ Agora vamos criar o arquivo **main.js** que será responsável por renderizar a 
 
 Em seguida executamos o webpack para que ele possa gerar nosso **bundle**:
 ```
-    > webpack
-    
-    Hash: 484a034e635dcd78a455
-    Version: webpack 1.13.2
-    Time: 980ms
+$: webpack --watch --progress -d
+Hash: 3d368ac1323d81d802ed
+Version: webpack 1.13.2
+Time: 4607ms
             Asset    Size  Chunks             Chunk Names
-    app.bundle.js  738 kB       0  [emitted]  main
-        + 172 hidden modules
+    app.bundle.js  785 kB       0  [emitted]  main
+app.bundle.js.map  864 kB       0  [emitted]  main
+    + 172 hidden modules
+
 
 ```
 
 Agora é só abrir o arquivo *index.html* no browser. Et voilá!
 
-### 2.3 - HelloWorld Component
+[Imagem do hello World]
+
+### 2.3 - Title Component
 
 Legal, mas ainda não criei nenhum Component, e agora? Vamos lá!
 Nosso componente HelloWorld vai herdar a classe **Component** do **React** e em seguida
 definimos o método **render** retornando o que queremos que o **Component** renderize.
 
 ```javascript
+// src/components/Title.js
+
 import React, { Component } from 'react'; // Importamos o React e o Component
 
-// Agora é só extender a classe Component para nosso HelloWorldComponent
-export default class HelloWorld extends Component {
+// Agora é só extender a classe Component para nosso Title
+export default class Title extends Component {
     render() {
         return (
-            <h1>Hello World Component!!</h1>
+            <h1>Title</h1>
         );
     }
 }
@@ -172,15 +172,144 @@ Component criado agora é só importá-lo no nosso **main.js** e utilizá-lo.
     import React from 'react';
     import { render } from 'react-dom';
 
-    import HelloWorld from './components/HelloWorld';
-    
+    import Title from './components/Title';
+
     render(
-        <HelloWorld />, 
+        <Title />, 
         document.getElementById("app")
     );
 ```
 
-Novamente rodamos o comando **webpack** no console e atualizamos a página. *SHAZAM C@%$&!!!!*
+Novamente rodamos o comando **webpack** no console e atualizarmos a página.
+
+### 2.4 - App e Playlist
+Agora vamos criar dois novos Components, o App.js que vai englobar todas as partes da nossa aplicação
+e o Playlist.js onde ficará a lista de músicas.
+
+```javascript
+// src/components/Playlist.js
+
+import React, { Component } from 'react';
+
+export default class Playlist extends Component {
+    render() {
+        return(
+            <ul class="collection with-header">
+                <li> Música </li>
+            </ul>
+        );
+    }
+
+}
+```
+
+No Component **App** vamos importar os dois Components que haviamos criado:
+
+```
+// src/components/App.js
+
+import React, { Component } from 'react';
+
+import Title from './Title';
+import Playlist from './Playlist';
+
+export default class App extends Component {
+    render() {
+        return(
+            <Title />
+            <Playlist />
+        );
+    }
+}
+```
+
+Em seguida vamos importar o **App.js** no nosso arquivo **Main.js**:
+
+```
+// src/main.js
+
+// imports
+
+import App from './components/App';
+
+render(
+    <App />,
+    document.getElementById("app")
+);
+```
+
+Agora vamos rodar o webpack e verificar o que acontece.
+
+Oops, o Webpack nos retornou o seguinte erro:
+```
+ERROR in ./src/components/App.js
+Module build failed: SyntaxError: Adjacent JSX elements must be wrapped in an enclosing tag (56:16)
+
+```
+
+O erro ocorreu porquê só podemos retornar um elemento JSX no método **render** do nosos component,então
+basta "**envelopar**" nossos components em um único elemento JSX:
+
+```
+// src/components/App.js
+
+render() {
+    return(
+        <div class="container">
+            <Title />
+            <Playlist />
+        </div>
+    );
+}
+```
+
+Agora bastar rodar o webpack e ver nossa aplicação funcionando. Hmm... Parece que tá tudo ok, mas vamos dar uma
+olhada no console do navegador.
+
+Temos a seguinte mensagem:
+
+```
+Warning: Unknown DOM property class. Did you mean className?
+    in div (created by App)
+    in App
+```
+
+Isso acontece porquê utilizamos a palavra reservada "class" nos nossos elementos JSX, para resolver isso basta
+substituir "class" por "className":
+
+```javascript
+// src/components/App.js
+
+// código anterior...
+
+return(
+    <div className="container">
+    // código sem alterações ...
+)
+
+
+// src/components/Playlist.js
+
+// código anterior...
+
+return(
+    <ul className="collection with-header">
+    // código sem alterações ...
+)
+```
+
+Se rodarmos a aplicação agora estará tudo ok.
+
+### 2.5 - PlaylistItem, Props e Iterando Component
+Agora vamos criar o Component para exibir nossas músicas:
+
+```
+// src/components/PlaylistItem.js
+
+
+
+```
+
 
 ## 3 - Estilizando nosso Component
 
@@ -203,7 +332,7 @@ export default class HelloWorld extends Component {
             textAlign: 'center',
             width: '450px',
             margin: '0 auto'
-        };        
+        };
 
         return (
             <h1 style={ styles }>Hello World Component!!</h1>
