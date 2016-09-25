@@ -286,8 +286,10 @@ return(
     <div className="container">
     // código sem alterações ...
 )
+```
 
 
+```
 // src/components/Playlist.js
 
 // código anterior...
@@ -370,7 +372,7 @@ Em seguida vamos exibir nosso componente PlaylistItem no console:
 ```javascript
 export default class PlaylistItem extends Component {
     render() {
-        console.log(this); // Nova linha
+        console.log(this); // linha adicionada
 
         return(
             <li className="collection-item avatar">
@@ -416,6 +418,7 @@ componentes!! Não parece uma má ideia né?
 render() {
     return (
         <ul className="collection with-header">
+            // Só repetir... Tão fácil.
             <PlaylistItem title={"Lose yourself"} author={"Eminem"} album={"Curtain Call"} />
             <PlaylistItem title={"When i'm gone"} author={"Eminem"} album={"Curtain Call"} />
             <PlaylistItem title={"Rap god"} author={"Eminem"} album={"The Marshall Mathers LP2"} />
@@ -477,7 +480,7 @@ export default class App extends Component {
 
 À primeira vista o **state** parece um simples objeto, mas preste muita atenção nele pois é ele que faz toda
 a mágica acontecer. Como o próprio nome sugere, o **state** representa todo o estado do componente, caso algo seja
-alterado o componente será renderizado novamente. Veremos isso mais adiante, por ora, vamos apenas exibir os dados
+alterado, o componente será renderizado novamente. Veremos isso mais adiante, por ora, vamos apenas exibir os dados
 que passamos para o componente Playlist:
 
 ```javascript
@@ -510,10 +513,13 @@ export default class Playlist extends Component {
 }
 ```
 
-Com isso feito ao visualizar nossa aplicação veremos todos os itens renderizados. 
-E esse id e **key** que mandamos como prop? Todo componente quando iterado necessita
-de uma chave única, no caso, o índice correspondente na lista de músicas. O id será utilizado
-mais adiante para remover um item da lista. **E porquê não utilizamos a key para remover o item?**
+Com isso feito, ao visualizar nossa aplicação veremos todos os itens renderizados.
+
+**_E esse id e __key__ que mandamos como prop_**?
+Todo componente quando iterado necessita de uma chave única, no caso, o índice correspondente na lista de músicas. O id será utilizado
+mais adiante para remover um item da lista.
+
+**_E porquê não utilizamos a key para remover o item?_**
 Pelo simples fato de que quando tentamos pegar o valor da key dentro do componente, será retornado
 o valor *undefined*.
 
