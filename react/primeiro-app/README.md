@@ -205,7 +205,7 @@ export default class Playlist extends Component {
 
 No Component **App** vamos importar os dois Components que haviamos criado:
 
-```
+```javascript
 // src/components/App.js
 
 import React, { Component } from 'react';
@@ -225,7 +225,7 @@ export default class App extends Component {
 
 Em seguida vamos importar o **App.js** no nosso arquivo **Main.js**:
 
-```
+```javascript
 // src/main.js
 
 // imports
@@ -248,9 +248,9 @@ Module build failed: SyntaxError: Adjacent JSX elements must be wrapped in an en
 ```
 
 O erro ocorreu porquê só podemos retornar um elemento JSX no método **render** do nosos component,então
-basta "**envelopar**" nossos components em um único elemento JSX:
+basta "**encapsular**" nossos components em um único elemento JSX:
 
-```
+```javascript
 // src/components/App.js
 
 render() {
@@ -303,13 +303,219 @@ Se rodarmos a aplicação agora estará tudo ok.
 ### 2.5 - PlaylistItem, Props e Iterando Component
 Agora vamos criar o Component para exibir nossas músicas:
 
-```
+```javascript
 // src/components/PlaylistItem.js
 
+import React, { Component } from 'react';
 
-
+export default class PlaylistItem extends Component {
+    render() {
+        return(
+            <li className="collection-item avatar">
+                <span className="title">Titulo</span>
+                <p>Artista - Album </p>
+            </li>
+        );
+    }
+}
 ```
 
+E em seguida vamos utilizá-lo no componente Playlist:
+
+```javascript
+// src/components/Playlist.js
+
+import React, { Component } from 'react';
+
+import PlaylistItem from './PlaylistItem';
+
+export default class Playlist extends Component {
+    render() {
+        return (
+            <ul className="collection with-header">
+                <PlaylistItem />
+            </ul>
+        );
+    }
+}
+```
+Agora só precisamos passar as informações para o nosso componente, para isso utilizaremos
+os **props**, explicando de maneira suscinta, **props** são basicamente as propriedades
+do nosso componente. Então sem mais delongas, vamos adicionar propriedades ao nosso componente:
+
+```javascript
+// src/components/Playlist.js
+
+import React, { Component } from 'react';
+
+import PlaylistItem from './PlaylistItem';
+
+export default class Playlist extends Component {
+    render() {
+        return (
+            <ul className="collection with-header">
+                // Passando valores através de props
+                <PlaylistItem 
+                    title={"Lose yourself"} 
+                    author={"Eminem"}
+                    album={"Curtain Call"} />
+            </ul>
+        );
+    }
+}
+```
+
+Em seguida vamos exibir nosso componente PlaylistItem no console:
+
+```javascript
+export default class PlaylistItem extends Component {
+    render() {
+        console.log(this); // Nova linha
+
+        return(
+            <li className="collection-item avatar">
+                <span className="title">Titulo</span>
+                <p>Artista - Album </p>
+            </li>
+        );
+    }
+}
+```
+
+No console do navegador poderemos ver tudo o que se refere ao componente
+PlaylistItem, também podemos perceber a presença do objeto **props** e se
+expandirmos ele poderemos ver que todos os dados que passamos estão disponíveis
+para serem acessados pelo componente Então vamos exibir esses dados:
+
+```javascript
+// src/components/PlaylistItem.js
+
+import React, { Component } from 'react';
+
+export default class PlaylistItem extends Component {
+    render() {
+        return(
+            <li className="collection-item avatar">
+                <span className="title">{ this.props.title }</span>
+                <p>{ this.props.author } - { this.props.album } </p>
+            </li>
+        );
+    }
+}
+```
+
+E teremos o seguinte resultado:
+[imagem-resultado-props]
+
+Agora como faremos para exibir várias músicas na nossa playlist? Simples, basta repetir
+componentes!! Não parece uma má ideia né?
+
+```javascript
+// src/components/Playliste.js
+
+render() {
+    return (
+        <ul className="collection with-header">
+            <PlaylistItem title={"Lose yourself"} author={"Eminem"} album={"Curtain Call"} />
+            <PlaylistItem title={"When i'm gone"} author={"Eminem"} album={"Curtain Call"} />
+            <PlaylistItem title={"Rap god"} author={"Eminem"} album={"The Marshall Mathers LP2"} />
+        </ul>
+    );
+```
+
+Funciona? Funciona. É inteligente? Não.
+
+Agora vamos fazer da maneira correta, primeiramente vamos editar o componente App e adicionar uma lista
+de músicas que serão exibidas:
+
+```javascript
+// src/components/App.js
+
+// imports omitidos
+
+export default class App extends Component {
+    constructor() {
+        super();
+
+        this.state = {
+             // lista de músicas
+             songs: [
+                {
+                    title: "Rap god",
+                    author: "Eminem",
+                    album: "The Marshall Mathers LP2",
+                    image: "https://upload.wikimedia.org/wikipedia/en/8/87/The_Marshall_Mathers_LP_2.png"
+                },
+                {
+                    title: "When i'm gone",
+                    author: "Eminem",
+                    album: "Curtain Call",
+                    image: "https://upload.wikimedia.org/wikipedia/en/4/4e/Curtain_Call_cover.jpg"
+                },
+                {
+                    title: "Lose yourself",
+                    author: "Eminem",
+                    album: "Curtain Call",
+                    image: "https://upload.wikimedia.org/wikipedia/en/4/4e/Curtain_Call_cover.jpg"
+                }
+            ]
+        };
+
+    }
+
+    render() {
+        return(
+            <div className="container">
+                <Title />
+                // Vamos tornar a lista acessível para o componente Playlist
+                <Playlist songs={this.state.songs}/>
+            </div>
+        );
+    }
+}
+```
+
+À primeira vista o **state** parece um simples objeto, mas preste muita atenção nele pois é ele que faz toda
+a mágica acontecer. Como o próprio nome sugere, o **state** representa todo o estado do componente, caso algo seja
+alterado o componente será renderizado novamente. Veremos isso mais adiante, por ora, vamos apenas exibir os dados
+que passamos para o componente Playlist:
+
+```javascript
+// src/component/Playlist.js
+
+// imports omitidos
+
+export default class Playlist extends Component {
+    // função para iterar os objetos do array e tranformá-los em um componente
+    createPlaylistItems() {
+        return this.props.songs.map((song, i) => 
+                <PlaylistItem title={song.title}
+                              author={song.author}
+                              album={song.album}
+                              image={song.image}
+                              id={i}
+                              key={i}
+                />
+        );
+    }
+
+    render() {
+        return (
+            <ul className="collection with-header">
+                // Chamamos a função para gerar os componentes na playlist
+                { this.createPlaylistItems() }
+            </ul>
+        );
+    }
+}
+```
+
+Com isso feito ao visualizar nossa aplicação veremos todos os itens renderizados. 
+E esse id e **key** que mandamos como prop? Todo componente quando iterado necessita
+de uma chave única, no caso, o índice correspondente na lista de músicas. O id será utilizado
+mais adiante para remover um item da lista. **E porquê não utilizamos a key para remover o item?**
+Pelo simples fato de que quando tentamos pegar o valor da key dentro do componente, será retornado
+o valor *undefined*.
 
 ## 3 - Estilizando nosso Component
 
@@ -374,13 +580,13 @@ Agora vamos habilitar o **livereloading** no **webpack-dev-server** adicionando 
 do arquivos **webpack.config.js**.
 
 ```javascript
-     plugins: [                                                          
-        new webpack.HotModuleReplacementPlugin() 
-     ],                                                                  
-     devServer: {                                                        
+     plugins: [
+        new webpack.HotModuleReplacementPlugin()
+     ],
+     devServer: {
         hot: true, // Ativa o HotModuleReplacement
-        inline: true // Inicia o server no modo inline                        
-     }  
+        inline: true // Inicia o server no modo inline
+     }
 ```
 Em seguida iniciamos o **webpack-dev-server** novamente e acessamos o endereço *http://localhost:8080*, agora
 a página irá atualizar sempre que fizermos algumas alteração no código da nossa aplicação.
